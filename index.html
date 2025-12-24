@@ -1,0 +1,119 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>繁体字ピンインカメラ</title>
+    <meta name="description" content="繁体字中国語をカメラで読み取り、ピンインを表示するWebアプリ">
+    
+    <!-- PWA Setup -->
+    <link rel="manifest" href="manifest.json">
+    <meta name="theme-color" content="#1a1a1a">
+    <link rel="apple-touch-icon" href="icon-192.png">
+
+    <!-- Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;700&family=Noto+Sans+TC:wght@400;500;700&display=swap" rel="stylesheet">
+    
+    <!-- Icons -->
+    <link href="https://fonts.googleapis.com/icon?family=Material+Icons+Round" rel="stylesheet">
+
+    <!-- Styles -->
+    <link rel="stylesheet" href="style.css">
+
+    <!-- Libraries -->
+    <!-- Pinyin Pro -->
+    <script src="https://unpkg.com/pinyin-pro"></script>
+</head>
+<body>
+    <div class="app-container">
+        <!-- Header -->
+        <header class="app-header">
+            <h1>繁体字ピンイン<span class="accent">カメラ</span></h1>
+            <button id="settings-btn" class="icon-btn" aria-label="設定">
+                <span class="material-icons-round">settings</span>
+            </button>
+        </header>
+
+        <!-- Main Content -->
+        <main class="main-content">
+            
+            <!-- Welcome/Initial State -->
+            <div id="initial-view" class="view active">
+                <div class="hero-card">
+                    <div class="icon-wrapper">
+                        <span class="material-icons-round">qr_code_scanner</span>
+                    </div>
+                    <h2>写真を撮って<br>読み取る</h2>
+                    <p>繁体字のテキストをカメラで認識し、<br>ピンインを表示します。</p>
+                </div>
+            </div>
+
+            <!-- Loading State -->
+            <div id="loading-view" class="view hidden">
+                <div class="loader-container">
+                    <div class="loader"></div>
+                    <p>解析中...</p>
+                </div>
+            </div>
+
+            <!-- Result State -->
+            <div id="result-view" class="view hidden">
+                <div class="result-header">
+                    <h3>認識結果</h3>
+                    <button id="close-result-btn" class="icon-btn small">
+                        <span class="material-icons-round">close</span>
+                    </button>
+                </div>
+                <div id="result-container" class="result-cards">
+                    <!-- Cards will be injected here -->
+                </div>
+            </div>
+
+        </main>
+
+        <!-- Floating Action Button for Camera -->
+        <div class="fab-container">
+            <label for="camera-input" class="fab">
+                <span class="material-icons-round">photo_camera</span>
+                <span class="fab-label">カメラ起動</span>
+            </label>
+            <input type="file" id="camera-input" accept="image/*" capture="environment">
+        </div>
+
+        <!-- Settings Modal -->
+        <div id="settings-modal" class="modal hidden">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h2>設定</h2>
+                    <button id="close-settings-btn" class="icon-btn">
+                        <span class="material-icons-round">close</span>
+                    </button>
+                </div>
+                <div class="modal-body">
+                    <div class="form-group">
+                        <label for="api-key-input">Google Cloud Vision API Key</label>
+                        <p class="description">お手持ちのAPIキーを入力してください。キーはブラウザ内にのみ保存されます。</p>
+                        <div class="input-wrapper">
+                            <input type="password" id="api-key-input" placeholder="AIzaSy...">
+                            <button id="toggle-visibility-btn" class="icon-btn input-action">
+                                <span class="material-icons-round">visibility</span>
+                            </button>
+                        </div>
+                    </div>
+                    <div id="save-status" class="status-msg"></div>
+                </div>
+                <div class="modal-footer">
+                    <button id="save-settings-btn" class="btn primary">保存</button>
+                </div>
+            </div>
+        </div>
+        
+        <!-- Toast Notification -->
+        <div id="toast" class="toast hidden"></div>
+    </div>
+
+    <script src="script.js"></script>
+</body>
+</html>
